@@ -1,14 +1,15 @@
 export interface iFile {
     id:string,
-    name:string
+    name:string,
+    folder?:iFile[] | [],
 }
 
-export interface iFolder extends iFile{
+export interface iFolder {
     file?: iFile,
-    folder?:iFolder
+    folder?:iFolder[]
 }
 
 export interface iFileManager {
-    globalFolder?:iFolder[]
+    globalFolder:iFile[]
 }
 
