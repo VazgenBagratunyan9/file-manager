@@ -4,12 +4,16 @@ export interface iFile {
     folder?:iFile[] | [],
 }
 
+
 export interface iFolder {
-    file?: iFile,
-    folder?:iFolder[]
+    folder: iFile
 }
 
-export interface iFileManager {
-    globalFolder:iFile[]
+export interface iSettings {
+    id:string
+    toggleDropdown:()=>void
 }
+
+
+
 

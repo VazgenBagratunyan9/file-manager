@@ -1,91 +1,67 @@
-import {makeAutoObservable} from "mobx";
-import {iFile, iFileManager} from '../interfaces/fileManager'
+import {makeAutoObservable, remove} from "mobx";
+import {iFile} from '../interfaces/fileManager'
 import uniqid from 'uniqid';
 
-class FileManager implements iFileManager {
-    count = 5
-    globalFolder = [
-        {
-            id: '1.1',
-            name: 'aaa',
-            folder: [
-                {
-                    id: '2.1',
-                    name: 'bbb',
-                    folder: [
-                        {
-                            id: '3.1',
-                            name: 'ccc',
-                            folder: [
-                                {
-                                    id:'4.1',
-                                    name: 'ddd11',
-                                }
-                            ]
-                        },
-                        {
-                            id: '3.2',
-                            name: 'cccc',
-                            folder: [
-                                {
-                                    id:'4.1.sds',
-                                    name: 'ddddddd',
-                                    folder:[{id:'5',name:'sds'}]
-                                },
-                                {
-                                    id:'4.2.sds',
-                                    name: 'ddddddd',
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
 
+class FileManager  {
+    currentFolder: iFile = {id:uniqid(),name:'document',folder:[]}
+    path: iFile[] = [this.currentFolder]
+    prevFolder: iFile[] = []
 
     constructor() {
         makeAutoObservable(this)
-        this.addFolder = this.addFolder.bind(this)
     }
 
-    searchFolder(obj: any[], i: number, id: string,myObj:object){
-        const prevFolder = [...obj];
 
+    add = (name:string)=>{
+        if(this.currentFolder.folder)
+        this.currentFolder.folder = [...this.currentFolder.folder,{id:uniqid(),name:name,folder:[]}]
+    }
 
-        const myFolder = obj.find(item => item.id === id)
-        console.log(myFolder === myObj)
+    open = (obj: iFile) => {
+        this.prevFolder.push(this.currentFolder)
+        this.path.push(obj)
+        this.currentFolder = obj
+    }
 
-        if(myFolder){
-            console.log(i)
-            console.log(myFolder.id)
+  
+
+    byLink = (id: string) => {
+        const idx = this.prevFolder.findIndex(item => item.id === id)
+        console.log(idx)
+        if(idx >= 0){
+            const count = (this.prevFolder.length) - idx
+            this.prevFolder.splice(idx+1, count)
+            this.path.splice(idx+1, count)
+            this.currentFolder = this.prevFolder[this.prevFolder.length-1]
         }
 
+    }
 
-        if(!myFolder && !!obj[i].folder){
-            this.searchFolder(obj[i].folder,i,id,myObj)
-        }else{
-
+    remove = (id: string) => {
+        if(this.currentFolder.folder){
+            const idx = this.currentFolder.folder?.findIndex(item => item.id === id)
+            if(idx >= 0){
+                this.currentFolder.folder?.splice(idx,1)
+            }
         }
-
-
     }
 
-    addFolder(myObj:object, id: string) {
-         this.searchFolder(this.globalFolder, 0, id,myObj)
-
+    changeName = (id:string,value:string)=>{
+        if(this.currentFolder.folder){
+            const idx = this.currentFolder.folder?.findIndex(item => item.id === id)
+            if(idx >= 0){
+                this.currentFolder.folder[idx].name = value
+            }
+        }
     }
 
-    addFile(name: string) {
-
-    }
-
-    removeFolder() {
-
-    }
-
-    removeFile() {
+    back = () => {
+        if(this.prevFolder.length > 0){
+            this.currentFolder = this.prevFolder[this.prevFolder.length - 1]
+            this.prevFolder.pop()
+            this.path.pop()
+        }
 
     }
 }
