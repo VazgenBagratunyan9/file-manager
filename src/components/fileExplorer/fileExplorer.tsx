@@ -31,17 +31,6 @@ export const FileExplorer: FC = observer(() => {
                         })
                     }
                 </Grid>
-                <Grid container direction={"row"} columnSpacing={2} rowSpacing={2}  minWidth={500}>
-                    {
-                        basket?.map(item => {
-                            return (
-                                <Grid item>
-                                    <Folder key={item.id} folder={item}/>
-                                </Grid>
-                            )
-                        })
-                    }
-                </Grid>
             </Grid>
 
         </Grid>

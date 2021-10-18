@@ -31,9 +31,11 @@ class FileManager  {
         sessionStorage.setItem('path',JSON.stringify(this.path))
         sessionStorage.setItem('prevFolder',JSON.stringify(this.prevFolder))
     }
+
     addFile = ()=>{
 
     }
+
     add = (name:string)=>{
         if(this.currentFolder.folder)
         this.currentFolder.folder = [...this.currentFolder.folder,{id:uniqid(),name:name,folder:[]}]
@@ -42,13 +44,15 @@ class FileManager  {
 
     open = (obj: iFile) => {
         this.path.push(obj)
+        this.prevFolder.push(this.currentFolder)
         this.currentFolder = obj
         this.setStore()
     }
 
     link = (id: string) => {
+
         const idx = this.prevFolder.findIndex(item => item.id === id)
-        console.log(idx)
+
         if(idx >= 0){
             const count = (this.prevFolder.length) - idx
             this.prevFolder.splice(idx+1, count)
@@ -80,6 +84,7 @@ class FileManager  {
     }
 
     back = () => {
+        console.log(this.prevFolder.length)
         if(this.prevFolder.length > 0){
             this.currentFolder = this.prevFolder[this.prevFolder.length - 1]
             this.prevFolder.pop()
