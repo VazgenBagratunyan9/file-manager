@@ -1,5 +1,5 @@
 import React, {ChangeEvent, FC, useState} from "react";
-import fileManager from "../../store/fileManager";
+import {fileManager} from "../../store/fileManager";
 
 import {Button, Grid} from "@mui/material";
 import {DeleteForever, DriveFileRenameOutline} from "../../assets/icons";
@@ -28,6 +28,7 @@ export const Settings: FC<iSettings> = ({id,toggleDropdown}) => {
 
     return (
         <Grid direction='row'
+              container
               justifyContent="center"
               alignItems="center" bgcolor='white'>
             {

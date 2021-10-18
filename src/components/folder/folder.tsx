@@ -9,38 +9,40 @@ import {Grid} from "@mui/material";
 
 import {Settings} from "./settings";
 
-import fileManager from "../../store/fileManager";
+import {fileManager} from "../../store/fileManager";
 
 
 
 export const Folder: FC<iFolder> = observer(({folder}) => {
     const [show, setShow] = useState(false)
     const {open} = fileManager
+
     const toggleDropdown = () => {
         console.log(show)
         setShow(prevState => !prevState)
     }
+
     const handleOpenFolder = () => {
         open(folder)
     }
-    return (
 
+    return (
         <Grid
             maxWidth={100}
-            item
+            container
             justifyContent='center'
             onDoubleClick={handleOpenFolder}
         >
             <OutsideClickHandler disabled={!show} onOutsideClick={toggleDropdown}>
-                <Grid onClick={toggleDropdown}>
+                <Grid item onClick={toggleDropdown}>
                     <FolderIcon fontSize="large"/>
                 </Grid>
-                <Grid maxWidth={100}>
+                <Grid item maxWidth={100}>
                     {folder.name}
                 </Grid>
                 {
                     show &&
-                    <Grid position="absolute">
+                    <Grid item position="absolute">
                         <Settings id={folder.id} toggleDropdown={toggleDropdown}/>
                     </Grid>
                 }

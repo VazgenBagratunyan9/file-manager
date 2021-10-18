@@ -2,7 +2,7 @@ import React, {ChangeEvent, FC, useState} from "react";
 import {Button, TextField} from "@mui/material";
 import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import FileManager from "../../store/fileManager";
+import {fileManager} from "../../store/fileManager";
 
 export const TopBar:FC = ()=>{
     const [value, setValue] = useState<string>('')
@@ -11,7 +11,7 @@ export const TopBar:FC = ()=>{
         setValue(e.target.value)
     }
 
-    const { add, back,path} = FileManager
+    const { add, back,path} = fileManager
 
     const addFolder = ()=>{
         if(!!value.trim()){
@@ -28,7 +28,7 @@ export const TopBar:FC = ()=>{
 
             <TextField
                 value={value}
-                variant="outlined"
+                variant="standard"
                 onChange={handleInput}
             />
             {
