@@ -1,14 +1,10 @@
 import React, {FC} from "react";
-
-import {observer} from "mobx-react-lite";
-import {fileManager} from '../../store/fileManager'
 import {Grid} from '@mui/material';
-import {Folder} from "../folder";
 import {TopBar} from "./topBar";
+import {ExplorerWindow} from "./ExplorerWindow";
 
 
-export const FileExplorer: FC = observer(() => {
-    const {currentFolder,basket} = fileManager
+export const FileExplorer: FC = () => {
 
     return (
         <Grid
@@ -20,19 +16,8 @@ export const FileExplorer: FC = observer(() => {
                 <TopBar />
             </Grid>
             <Grid item>
-                <Grid container direction={"row"} columnSpacing={2} rowSpacing={2}  minWidth={500}>
-                    {
-                        currentFolder.folder?.map(item => {
-                            return (
-                                <Grid item>
-                                    <Folder key={item.id} folder={item}/>
-                                </Grid>
-                            )
-                        })
-                    }
-                </Grid>
+                <ExplorerWindow />
             </Grid>
-
         </Grid>
     )
-})
+}

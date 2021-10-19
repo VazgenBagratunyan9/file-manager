@@ -1,8 +1,9 @@
 import React, {FC} from 'react';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Link from '@mui/material/Link';
 import {fileManager} from '../../store/fileManager'
 import {observer} from 'mobx-react-lite'
+import {Button} from "@mui/material";
+
 
 
 export const Path: FC = observer(() => {
@@ -13,17 +14,14 @@ export const Path: FC = observer(() => {
             {
                 path.map(item => {
                     return (
-                        <Link
+                        <Button
                             key={item.id}
                             onClick={() => {
                                 link(item.id)
                             }}
-                            underline="hover"
-                            sx={{color:"inherit"}}
-                            href="#"
                         >
                             {item.name}
-                        </Link>
+                        </Button>
                     )
                 })
             }

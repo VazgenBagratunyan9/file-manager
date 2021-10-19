@@ -1,12 +1,14 @@
 import React, {ChangeEvent, FC, useState} from "react";
 import {fileManager} from "../../store/fileManager";
 
-import {Button, Grid} from "@mui/material";
-import {DeleteForever, DriveFileRenameOutline} from "../../assets/icons";
+import {Grid,ListItemIcon ,ListItemText,Paper, TextField} from "@mui/material";
 import {iSettings} from "../../interfaces/fileManager";
+import {MUIDriveFileRenameOutlineIcon, MUIRestoreFromTrashIcon} from "../../assets/icons";
+
+import MenuItem from "@mui/material/MenuItem";
 
 
-export const Settings: FC<iSettings> = ({id,toggleDropdown}) => {
+export const Settings: FC<iSettings> = ({id, toggleDropdown}) => {
     const [isRename, setIsRename] = useState<boolean>(false)
     const [value, setValue] = useState<string>('')
 
@@ -15,9 +17,11 @@ export const Settings: FC<iSettings> = ({id,toggleDropdown}) => {
     const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
         setValue(e.target.value)
     }
+
     const folderDelete = () => {
         remove(id)
     }
+
     const rename = (e: ChangeEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (!!value) {
@@ -34,27 +38,32 @@ export const Settings: FC<iSettings> = ({id,toggleDropdown}) => {
             {
                 !isRename &&
                 <Grid item>
-                    <Button onClick={folderDelete}>
-                        <DeleteForever/>
-                    </Button>
+                    <Paper sx={{width: 120, maxWidth: '100%'}}>
+                        <MenuItem onClick={folderDelete}>
+                            <ListItemIcon>
+                                <MUIRestoreFromTrashIcon fontSize="small"/>
+                            </ListItemIcon>
+                            <ListItemText>Delete</ListItemText>
+                        </MenuItem>
+                        <MenuItem onClick={() => setIsRename(p => !p)}>
+                            <ListItemIcon>
+                                <MUIDriveFileRenameOutlineIcon fontSize="small"/>
+                            </ListItemIcon>
+                            <ListItemText>rename</ListItemText>
+                        </MenuItem>
+                    </Paper>
                 </Grid>
-            }
-            {
-                !isRename &&
-                <Grid item>
-                    <Button onClick={() => setIsRename(p => !p)}>
-                        <DriveFileRenameOutline/>
-                    </Button>
-                </Grid>
+
             }
             {
                 isRename &&
                 <Grid item>
                     <form onSubmit={rename}>
-                        <input
+                        <TextField
                             value={value}
+                            variant="standard"
                             onChange={handleInput}
-                            style={{width:'100px'}}
+                            sx={{width: 120, maxWidth: '100%'}}
                         />
                     </form>
                 </Grid>

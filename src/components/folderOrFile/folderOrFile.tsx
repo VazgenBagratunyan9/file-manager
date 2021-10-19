@@ -1,24 +1,21 @@
 import React, { FC, useState} from "react";
 import {observer} from "mobx-react-lite";
-import {iFolder} from "../../interfaces/fileManager";
+import {iFolderOrFile} from "../../interfaces/fileManager";
 import OutsideClickHandler from 'react-outside-click-handler';
-
-import {Folder as FolderIcon} from '../../assets/icons'
-
 import {Grid} from "@mui/material";
 
+import {fileManager} from "../../store/fileManager";
+import {MUIDescriptionIcon, MUIFolderIcon} from "../../assets/icons";
 import {Settings} from "./settings";
 
-import {fileManager} from "../../store/fileManager";
 
 
 
-export const Folder: FC<iFolder> = observer(({folder}) => {
+export const FolderOrFile: FC<iFolderOrFile> = observer(({folder}) => {
     const [show, setShow] = useState(false)
     const {open} = fileManager
 
     const toggleDropdown = () => {
-        console.log(show)
         setShow(prevState => !prevState)
     }
 
@@ -31,12 +28,29 @@ export const Folder: FC<iFolder> = observer(({folder}) => {
             maxWidth={100}
             container
             justifyContent='center'
-            onDoubleClick={handleOpenFolder}
         >
             <OutsideClickHandler disabled={!show} onOutsideClick={toggleDropdown}>
-                <Grid item onClick={toggleDropdown}>
-                    <FolderIcon fontSize="large"/>
-                </Grid>
+                {
+                    folder?.folder &&
+                    <Grid
+                        item
+                        onClick={toggleDropdown}
+                        onDoubleClick={handleOpenFolder}
+                    >
+                        <MUIFolderIcon  fontSize="large"/>
+                    </Grid>
+                }
+
+                {
+                    !folder?.folder &&
+                    <Grid
+                        item
+                        onClick={toggleDropdown}
+                    >
+                        <MUIDescriptionIcon  fontSize="large"/>
+                    </Grid>
+                }
+
                 <Grid item maxWidth={100}>
                     {folder.name}
                 </Grid>

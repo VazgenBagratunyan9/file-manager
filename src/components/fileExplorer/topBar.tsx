@@ -1,43 +1,67 @@
 import React, {ChangeEvent, FC, useState} from "react";
-import {Button, TextField} from "@mui/material";
-import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import {Button, Grid, TextField} from "@mui/material";
+
 import {fileManager} from "../../store/fileManager";
+import {MUIArrowBackIcon, MUICreateNewFolderIcon, MUIDescriptionIcon} from "../../assets/icons";
+import {observer} from "mobx-react-lite";
 
-export const TopBar:FC = ()=>{
-    const [value, setValue] = useState<string>('')
+export const TopBar:FC = observer(
+    ()=>{
+        const [value, setValue] = useState<string>('')
 
-    const handleInput = (e:ChangeEvent<HTMLInputElement>) => {
-        setValue(e.target.value)
-    }
-
-    const { add, back,path} = fileManager
-
-    const addFolder = ()=>{
-        if(!!value.trim()){
-            add(value)
-            setValue('')
+        const handleInput = (e:ChangeEvent<HTMLInputElement>) => {
+            setValue(e.target.value)
         }
-    }
 
-    return (
-        <div>
-            <Button onClick={addFolder}>
-                <CreateNewFolderIcon/>
-            </Button>
+        const { addFolder,addFile, back,path} = fileManager
 
-            <TextField
-                value={value}
-                variant="standard"
-                onChange={handleInput}
-            />
-            {
-                path.length > 1 &&
-                <Button onClick={() => {back()}}>
-                    <ArrowBackIcon/>
-                </Button>
+        const addNewFolder = ()=>{
+            if(!!value.trim()){
+                addFolder(value)
+                setValue('')
             }
+        }
 
-        </div>
-    )
-}
+        const addNewFile = ()=>{
+            if(!!value.trim()){
+                addFile(value)
+                setValue('')
+            }
+        }
+
+        return (
+            <Grid
+                container
+            >
+                {/*button addFolder*/}
+                <Grid item>
+                    <Button onClick={addNewFolder}>
+                        <MUICreateNewFolderIcon />
+                    </Button>
+                </Grid>
+                <Grid item>
+                    <Button onClick={addNewFile}>
+                        <MUIDescriptionIcon />
+                    </Button>
+                </Grid>
+                {/*button addFile*/}
+                <Grid item>
+                    <TextField
+                        value={value}
+                        variant="standard"
+                        onChange={handleInput}
+                    />
+                </Grid>
+                {/*button back*/}
+                <Grid item>
+                    {
+                        path.length > 1 &&
+                        <Button onClick={() => {back()}}>
+                            <MUIArrowBackIcon />
+                        </Button>
+                    }
+                </Grid>
+            </Grid>
+        )
+    }
+)
