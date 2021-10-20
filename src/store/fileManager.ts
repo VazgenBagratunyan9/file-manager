@@ -4,10 +4,11 @@ import uniqid from 'uniqid';
 
 
 class FileManager implements iFileManager{
-    currentFolder: iFile = {id:uniqid(),name:'document',folder:[]}
+    currentFolder: iFile = {id:uniqid(),name:'document',folder:[],basket:[]}
     path: iFile[] = [this.currentFolder]
     basket:iFile[] = []
     prevFolder: iFile[] = []
+    storage:iFile[] = []
 
     constructor() {
         makeAutoObservable(this)
@@ -26,27 +27,48 @@ class FileManager implements iFileManager{
         }
     }
 
+    toBringBack=(id:string,parentID:string)=>{
+        const idx = this.basket.findIndex(item => item.id === id)
+        console.log(idx)
+        if(idx >= 0){
+            const removet = this.basket.splice(idx,1)
+            if(this.currentFolder.id === parentID){
+                console.log(1)
+                this.currentFolder.folder?.push(removet[0])
+            }
+            if(this.currentFolder.id !== parentID){
+                console.log(2)
+                this.storage.map(item => {
+                    console.log(item.id === parentID)
+                    if(item.id === parentID){
+                        item.folder?.push(removet[0])
+                    }
+                })
+            }
+        }
+    }
+
     setStore = ()=>{
         sessionStorage.setItem('currentFolder',JSON.stringify(this.currentFolder))
         sessionStorage.setItem('path',JSON.stringify(this.path))
         sessionStorage.setItem('prevFolder',JSON.stringify(this.prevFolder))
     }
 
-    addFile = (name:string)=>{
+    addFile = (name:string,type:'file'|'folder')=>{
         if(this.currentFolder.folder){
-            const idx =  this.currentFolder.folder.findIndex(item => item.name === name)
-            if(idx < 0){
+            const idx =  this.currentFolder.folder.findIndex(item => (item.name === name && item.folder === undefined))
+            if(idx < 0 && type === 'folder'){
                 this.currentFolder.folder = [...this.currentFolder.folder,{id:uniqid(),name:name}]
                 this.setStore()
             }
         }
     }
 
-    addFolder = (name:string)=>{
+    addFolder = (name:string,type:'folder' | 'file')=>{
         if(this.currentFolder.folder){
             const idx =  this.currentFolder.folder.findIndex(item => item.name === name)
-            if(idx < 0){
-                this.currentFolder.folder = [...this.currentFolder.folder,{id:uniqid(),name:name,folder:[]}]
+            if(idx < 0 && type === 'file'){
+                this.currentFolder.folder = [...this.currentFolder.folder,{id:uniqid(),name:name,folder:[],basket:[]}]
                 this.setStore()
             }
         }
@@ -55,6 +77,7 @@ class FileManager implements iFileManager{
     open = (obj: iFile) => {
         this.path.push(obj)
         this.prevFolder.push(this.currentFolder)
+        this.storage = this.prevFolder
         this.currentFolder = obj
         this.setStore()
     }
@@ -77,7 +100,7 @@ class FileManager implements iFileManager{
             const idx = this.currentFolder.folder?.findIndex(item => item.id === id)
             if(idx >= 0){
                 const remove= this.currentFolder.folder?.splice(idx,1)
-                this.basket.push(remove[0])
+                this.basket?.push({...remove[0],parentID:this.currentFolder.id})
                 this.setStore()
             }
         }

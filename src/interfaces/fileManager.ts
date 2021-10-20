@@ -3,7 +3,9 @@ import uniqid from "uniqid";
 export interface iFile {
     id:string,
     name:string,
-    folder?:iFile[] | [],
+    parentID?:string
+    folder?:iFile[],
+    basket?:iFile[]
 }
 
 export interface iFileManager {
