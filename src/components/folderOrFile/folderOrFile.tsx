@@ -9,8 +9,6 @@ import {MUIDescriptionIcon, MUIFolderIcon} from "../../assets/icons";
 import {Settings} from "./settings";
 
 
-
-
 export const FolderOrFile: FC<iFolderOrFile> = observer(({folder}) => {
     const [show, setShow] = useState(false)
     const {open} = fileManager

@@ -2,7 +2,7 @@ import React, {FC, useState} from "react";
 import {Button, Grid} from '@mui/material';
 import {TopBar} from "./topBar";
 import {FileList} from "./fileList";
-import {Removal} from "../basket";
+import {Removal} from "../removel";
 import {MUIDeleteOutlineIcon,MUISnippetFolderIcon} from '../../assets/icons'
 
 export const FileExplorer: FC = () => {
