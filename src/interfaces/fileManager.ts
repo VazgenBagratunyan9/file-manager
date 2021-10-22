@@ -3,15 +3,15 @@ import uniqid from "uniqid";
 export interface iFile {
     id:string,
     name:string,
+    type:'folder' | 'file'
     parentID?:string
     folder?:iFile[],
-    basket?:iFile[]
 }
 
 export interface iFileManager {
     currentFolder: iFile
     path: iFile[]
-    basket:iFile[]
+    removal:iFile[]
     prevFolder: iFile[]
 }
 

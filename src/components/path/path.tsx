@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
-import {fileManager} from '../../store/fileManager'
+import {fileManager} from '../../store'
 import {observer} from 'mobx-react-lite'
 import {Button} from "@mui/material";
 

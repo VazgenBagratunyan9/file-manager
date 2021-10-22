@@ -4,7 +4,7 @@ import {iFolderOrFile} from "../../interfaces/fileManager";
 import OutsideClickHandler from 'react-outside-click-handler';
 import {Grid} from "@mui/material";
 
-import {fileManager} from "../../store/fileManager";
+import {fileManager} from "../../store/";
 import {MUIDescriptionIcon, MUIFolderIcon} from "../../assets/icons";
 import {Settings} from "./settings";
 
@@ -22,6 +22,7 @@ export const FolderOrFile: FC<iFolderOrFile> = observer(({folder}) => {
     const handleOpenFolder = () => {
         open(folder)
     }
+
 
     return (
         <Grid

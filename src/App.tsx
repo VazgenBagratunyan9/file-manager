@@ -2,18 +2,19 @@ import React, {FC,useEffect} from 'react';
 
 import {observer} from "mobx-react-lite";
 
-import {fileManager} from "./store/fileManager";
+import {fileManager} from "./store/";
 
 import {Path} from "./components/path";
 import {FileExplorer} from "./components/fileExplorer";
 import {Grid} from "@mui/material";
+import {GlobalAlert} from "./components/globalAlert";
 
 
 
 
 export const App:FC = observer(() => {
 
-    const {getStore} = fileManager
+    const {getStore,alert} = fileManager
 
     useEffect(()=>{
 
@@ -34,6 +35,11 @@ export const App:FC = observer(() => {
             <Grid item>
                 <FileExplorer />
             </Grid>
+            {
+                !!alert &&
+                <GlobalAlert />
+            }
+
         </Grid>
     );
 })

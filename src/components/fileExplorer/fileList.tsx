@@ -1,10 +1,10 @@
 import React, {FC} from "react";
 import {Grid} from "@mui/material";
 import {FolderOrFile} from "../folderOrFile";
-import {fileManager} from "../../store/fileManager";
+import {fileManager} from "../../store/";
 import {observer} from "mobx-react-lite";
 
-export const ExplorerWindow:FC = observer(
+export const FileList:FC = observer(
     ()=>{
         const {currentFolder} = fileManager
         return (

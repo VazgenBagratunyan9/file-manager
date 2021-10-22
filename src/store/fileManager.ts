@@ -3,15 +3,20 @@ import {iFile, iFileManager} from '../interfaces/fileManager'
 import uniqid from 'uniqid';
 
 
-class FileManager implements iFileManager{
-    currentFolder: iFile = {id:uniqid(),name:'document',folder:[],basket:[]}
+export class FileManager implements iFileManager{
+    currentFolder: iFile = {id:uniqid(),type:'folder',name:'document',folder:[]}
     path: iFile[] = [this.currentFolder]
-    basket:iFile[] = []
+    removal:iFile[] = []
     prevFolder: iFile[] = []
-    storage:iFile[] = []
+    history:iFile[] = [this.currentFolder]
+    alert:string = ''
 
     constructor() {
         makeAutoObservable(this)
+    }
+
+    alertName = (name:string)=>{
+        this.alert = name
     }
 
     getStore = ()=>{
@@ -27,49 +32,52 @@ class FileManager implements iFileManager{
         }
     }
 
-    toBringBack=(id:string,parentID:string)=>{
-        const idx = this.basket.findIndex(item => item.id === id)
-        console.log(idx)
-        if(idx >= 0){
-            const removet = this.basket.splice(idx,1)
-            if(this.currentFolder.id === parentID){
-                console.log(1)
-                this.currentFolder.folder?.push(removet[0])
-            }
-            if(this.currentFolder.id !== parentID){
-                console.log(2)
-                this.storage.map(item => {
-                    console.log(item.id === parentID)
-                    if(item.id === parentID){
-                        item.folder?.push(removet[0])
-                    }
-                })
-            }
-        }
-    }
-
     setStore = ()=>{
         sessionStorage.setItem('currentFolder',JSON.stringify(this.currentFolder))
         sessionStorage.setItem('path',JSON.stringify(this.path))
         sessionStorage.setItem('prevFolder',JSON.stringify(this.prevFolder))
     }
 
-    addFile = (name:string,type:'file'|'folder')=>{
-        if(this.currentFolder.folder){
-            const idx =  this.currentFolder.folder.findIndex(item => (item.name === name && item.folder === undefined))
-            if(idx < 0 && type === 'folder'){
-                this.currentFolder.folder = [...this.currentFolder.folder,{id:uniqid(),name:name}]
-                this.setStore()
+    restore = (id:string,parentID:string)=>{
+        const idx = this.removal.findIndex(item => item.id === id)
+        console.log(idx)
+        if(idx >= 0){
+            const rest = this.removal.splice(idx,1)
+            if(this.currentFolder.id === parentID){
+                this.currentFolder.folder?.push(rest[0])
+            }
+
+
+            if(this.currentFolder.id !== parentID){
+                this.history.map(item => {
+                    if(item.id === parentID){
+                        item.folder?.push(rest[0])
+                    }
+                })
             }
         }
     }
 
-    addFolder = (name:string,type:'folder' | 'file')=>{
+    addFile = (name:string,format:string)=>{
         if(this.currentFolder.folder){
-            const idx =  this.currentFolder.folder.findIndex(item => item.name === name)
-            if(idx < 0 && type === 'file'){
-                this.currentFolder.folder = [...this.currentFolder.folder,{id:uniqid(),name:name,folder:[],basket:[]}]
+            const idx =  this.currentFolder.folder.findIndex(item => (item.name === name+format && item.type === 'file'))
+            if(idx < 0 ){
+                this.currentFolder.folder = [...this.currentFolder.folder,{id:uniqid(),name:`${name}${format}`,type:'file'}]
                 this.setStore()
+            }else{
+                this.alertName('this file already exists')
+            }
+        }
+    }
+
+    addFolder = (name:string)=>{
+        if(this.currentFolder.folder){
+            const idx =  this.currentFolder.folder.findIndex(item => (item.name === name && item.type === 'folder'))
+            if(idx < 0){
+                this.currentFolder.folder = [...this.currentFolder.folder,{id:uniqid(),name:name,folder:[],type:'folder'}]
+                this.setStore()
+            }else {
+                this.alertName('this folder already exists')
             }
         }
     }
@@ -77,7 +85,10 @@ class FileManager implements iFileManager{
     open = (obj: iFile) => {
         this.path.push(obj)
         this.prevFolder.push(this.currentFolder)
-        this.storage = this.prevFolder
+        const idx = this.history.findIndex(item => item.id === obj.id)
+        if(idx < 0){
+            this.history.push(obj)
+        }
         this.currentFolder = obj
         this.setStore()
     }
@@ -99,8 +110,8 @@ class FileManager implements iFileManager{
         if(this.currentFolder.folder){
             const idx = this.currentFolder.folder?.findIndex(item => item.id === id)
             if(idx >= 0){
-                const remove= this.currentFolder.folder?.splice(idx,1)
-                this.basket?.push({...remove[0],parentID:this.currentFolder.id})
+                const remove = this.currentFolder.folder?.splice(idx,1)
+                this.removal?.push({...remove[0],parentID:this.currentFolder.id})
                 this.setStore()
             }
         }
@@ -126,5 +137,5 @@ class FileManager implements iFileManager{
     }
 }
 
-export const fileManager = new FileManager()
+
 

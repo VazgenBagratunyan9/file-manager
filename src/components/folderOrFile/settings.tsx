@@ -1,11 +1,11 @@
 import React, {ChangeEvent, FC, useState} from "react";
-import {fileManager} from "../../store/fileManager";
+import {fileManager} from "../../store/";
 
 import {Grid,ListItemIcon ,ListItemText,Paper, TextField} from "@mui/material";
 import {iSettings} from "../../interfaces/fileManager";
 import {MUIDriveFileRenameOutlineIcon, MUIRestoreFromTrashIcon} from "../../assets/icons";
 
-import MenuItem from "@mui/material/MenuItem";
+import {MenuItem} from "@mui/material/";
 
 
 export const Settings: FC<iSettings> = ({id, toggleDropdown}) => {

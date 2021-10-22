@@ -1,3 +1,3 @@
 export {FileExplorer} from './fileExplorer'
-export {ExplorerWindow} from './ExplorerWindow'
+export {FileList} from './fileList'
 export {TopBar} from './topBar'

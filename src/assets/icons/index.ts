@@ -14,6 +14,8 @@ import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutli
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import FolderIcon from '@mui/icons-material/Folder';
 import DescriptionIcon from '@mui/icons-material/Description';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import SnippetFolderIcon from '@mui/icons-material/SnippetFolder';
 
 export const MUICreateNewFolderIcon = CreateNewFolderIcon
 export const MUIRestoreFromTrashIcon = RestoreFromTrashIcon
@@ -21,3 +23,5 @@ export const MUIDriveFileRenameOutlineIcon = DriveFileRenameOutlineIcon
 export const MUIArrowBackIcon = ArrowBackIcon
 export const MUIFolderIcon = FolderIcon
 export const MUIDescriptionIcon = DescriptionIcon
+export const MUIDeleteOutlineIcon = DeleteOutlineIcon
+export const MUISnippetFolderIcon = SnippetFolderIcon
