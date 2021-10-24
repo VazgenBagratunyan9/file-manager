@@ -9,6 +9,8 @@ import {MUIDescriptionIcon, MUIFolderIcon} from "../../assets/icons";
 import {Settings} from "./settings";
 
 
+window.oncontextmenu =  () => false
+
 export const FolderOrFile: FC<iFolderOrFile> = observer(({folder}) => {
     const [show, setShow] = useState(false)
     const {open} = fileManager
@@ -33,7 +35,7 @@ export const FolderOrFile: FC<iFolderOrFile> = observer(({folder}) => {
                     folder?.folder &&
                     <Grid
                         item
-                        onClick={toggleDropdown}
+                        onContextMenu={toggleDropdown}
                         onDoubleClick={handleOpenFolder}
                     >
                         <MUIFolderIcon  fontSize="large"/>
@@ -44,7 +46,7 @@ export const FolderOrFile: FC<iFolderOrFile> = observer(({folder}) => {
                     !folder?.folder &&
                     <Grid
                         item
-                        onClick={toggleDropdown}
+                        onContextMenu={toggleDropdown}
                     >
                         <MUIDescriptionIcon  fontSize="large"/>
                     </Grid>
@@ -56,7 +58,7 @@ export const FolderOrFile: FC<iFolderOrFile> = observer(({folder}) => {
                 {
                     show &&
                     <Grid item position="absolute">
-                        <Settings id={folder.id} toggleDropdown={toggleDropdown}/>
+                        <Settings id={folder.id} defaultValue={folder.name} toggleDropdown={toggleDropdown}/>
                     </Grid>
                 }
             </OutsideClickHandler>

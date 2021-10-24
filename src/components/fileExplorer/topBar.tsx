@@ -1,10 +1,10 @@
 import React, {ChangeEvent, FC, useState} from "react";
-import {Alert, Button, FormControl, Grid, InputLabel, Select, SelectChangeEvent, TextField} from "@mui/material";
+import {Button, FormControl, Grid,  Select, SelectChangeEvent, TextField} from "@mui/material";
 
 import {fileManager} from "../../store/";
-import {MUIArrowBackIcon, MUICreateNewFolderIcon, MUIDeleteOutlineIcon, MUIDescriptionIcon} from "../../assets/icons";
+import {MUIArrowBackIcon, MUICreateNewFolderIcon, MUIDescriptionIcon} from "../../assets/icons";
 import {observer} from "mobx-react-lite";
-import {MenuItem} from "@mui/material/";
+import MenuItem from "@mui/material/MenuItem";
 
 export const TopBar: FC = observer(
     () => {
@@ -17,7 +17,8 @@ export const TopBar: FC = observer(
         }
 
         const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
-            setValue(e.target.value)
+           const value = e.target.value.replace(/\./gm,'')
+            setValue(value)
         }
 
         const {addFolder, addFile, back, path,alertName} = fileManager

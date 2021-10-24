@@ -21,6 +21,7 @@ export interface iFolderOrFile {
 
 export interface iSettings {
     id:string
+    defaultValue:string
     toggleDropdown:()=>void
 }
 

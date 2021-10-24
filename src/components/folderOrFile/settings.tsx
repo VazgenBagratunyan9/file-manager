@@ -8,9 +8,9 @@ import {MUIDriveFileRenameOutlineIcon, MUIRestoreFromTrashIcon} from "../../asse
 import {MenuItem} from "@mui/material/";
 
 
-export const Settings: FC<iSettings> = ({id, toggleDropdown}) => {
+export const Settings: FC<iSettings> = ({id,defaultValue, toggleDropdown}) => {
     const [isRename, setIsRename] = useState<boolean>(false)
-    const [value, setValue] = useState<string>('')
+    const [value, setValue] = useState<string>(defaultValue)
 
     const {changeName, remove} = fileManager
 

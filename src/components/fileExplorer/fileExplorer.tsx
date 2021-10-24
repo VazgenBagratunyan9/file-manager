@@ -4,6 +4,7 @@ import {TopBar} from "./topBar";
 import {FileList} from "./fileList";
 import {Removal} from "../removal";
 import {MUIDeleteOutlineIcon,MUISnippetFolderIcon} from '../../assets/icons'
+import {Path} from "../path";
 
 export const FileExplorer: FC = () => {
     const [activeWindow,setActiveWindow] = useState(false)
@@ -13,6 +14,12 @@ export const FileExplorer: FC = () => {
             direction={'column'}
             spacing={2}
         >
+            {
+                !activeWindow &&
+                <Grid item>
+                    <Path />
+                </Grid>
+            }
 
             <Grid container>
                 {
